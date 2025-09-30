@@ -59,7 +59,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 dir('SPE_Mini_Project') {
-                    sh "ansible-playbook -i app/infra/hosts app/infra/deploy.yml"
+                    sh "ansible-playbook -i ansible/hosts ansible/deploy.yml"
                 }
             }
         }

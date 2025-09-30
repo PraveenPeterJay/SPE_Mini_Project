@@ -152,5 +152,12 @@ class CalculatorTest {
         assertEquals(3.0, calculator.power(9.0, 0.5), DELTA);
     }
 
+    @Test
+    void testPowerVeryLargeExponent() {
+        double result = calculator.power(2.0, 1024); // way too large for double
+        assertTrue(Double.isInfinite(result), "Result should be infinite for huge exponents");
+        assertEquals(Double.POSITIVE_INFINITY, result);
+    }
+
 }
 

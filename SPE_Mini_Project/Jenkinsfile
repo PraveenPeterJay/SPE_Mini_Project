@@ -16,41 +16,51 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                dir('SPE_Mini_Project') {
+                    sh 'mvn test'
+                }
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit 'SPE_Mini_Project/**/target/surefire-reports/*.xml'
                 }
             }
         }
 
         stage('Build JAR') {
             steps {
-                sh 'mvn clean package'
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                dir('SPE_Mini_Project') {
+                    sh 'mvn clean package'
+                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                }
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f dockerfile1 ."
+                dir('SPE_Mini_Project') {
+                    sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f dockerfile1 ."
+                }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                sh """
-                echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
-                docker push $DOCKER_IMAGE:$DOCKER_TAG
-                docker logout
-                """
+                dir('SPE_Mini_Project') {
+                    sh """
+                    echo "$DOCKERHUB_CREDENTIALS_PSW" | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
+                    docker push $DOCKER_IMAGE:$DOCKER_TAG
+                    docker logout
+                    """
+                }
             }
         }
 
         stage('Deploy with Ansible') {
             steps {
-                sh "ansible-playbook -i app/infra/hosts app/infra/deploy.yml"
+                dir('SPE_Mini_Project') {
+                    sh "ansible-playbook -i app/infra/hosts app/infra/deploy.yml"
+                }
             }
         }
     }

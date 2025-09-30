@@ -38,9 +38,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('SPE_Mini_Project') {
-                    sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG -f dockerfile1 ."
-                }
+                    dir('SPE_Mini_Project') {
+                        sh "docker build -t $DOCKER_IMAGE:$DOCKER_TAG ."
+                    }
             }
         }
 

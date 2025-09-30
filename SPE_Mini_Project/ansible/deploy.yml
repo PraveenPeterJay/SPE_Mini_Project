@@ -1,0 +1,39 @@
+---
+- name: Deploy Maven App Docker Container
+  hosts: app_servers
+  become: yes
+  tasks:
+
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+      become: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Pull latest Docker image
+      docker_image:
+        name: praveenpeterjay2/miniproj_image1
+        tag: "1.0"
+        source: pull
+
+    - name: Stop existing container (if any)
+      docker_container:
+        name: maven_app
+        state: absent
+        force_kill: yes
+
+    - name: Run Docker container
+      docker_container:
+        name: maven_app
+        image: praveenpeterjay2/miniproj_image1:1.0
+        state: started
+        restart_policy: always
+        ports:
+          - "8081:8080"

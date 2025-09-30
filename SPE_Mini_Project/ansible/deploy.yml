@@ -2,6 +2,7 @@
 - name: Deploy Maven App Docker Container
   hosts: app_servers
   become: yes
+  gather_facts: no   # skip gathering facts
   tasks:
 
     - name: Ensure Docker is installed
@@ -9,7 +10,6 @@
         name: docker.io
         state: present
       become: yes
-      when: ansible_os_family == "Debian"
 
     - name: Start Docker service
       service:

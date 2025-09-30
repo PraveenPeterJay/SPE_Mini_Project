@@ -35,5 +35,6 @@
         image: praveenpeterjay2/miniproj_image1:1.0
         state: started
         restart_policy: always
+        detach: true
         ports:
           - "8081:8080"

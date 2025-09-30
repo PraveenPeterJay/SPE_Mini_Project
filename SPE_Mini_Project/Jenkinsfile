@@ -44,6 +44,12 @@ pipeline {
             }
         }
 
+        stage('Run Application with Inputs') {
+            steps {
+                sh 'docker run --rm -i praveenpeterjay2/miniproj_image1:1.0 < input.txt'
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 dir('SPE_Mini_Project') {

@@ -1,2 +1,2 @@
 [app_servers]
-localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3 ansible_become_password=8289
+localhost ansible_connection=local
